@@ -28,6 +28,18 @@ const setEditModal = (coop_number) => {
   ).action = `http://localhost:3000/coop/${coop_number}`;
 };
 
+// ADDED//////////////////////////////////////////////////////////
+// Form variable
+const form = document.getElementById("searchForm");
+// Event listener for Search submission
+form.addEventListener("submit", (e) => {
+  // Prevent form input from being lost after submission
+  e.preventDefault();
+  // Search variables
+  const searchValue = document.getElementById("search").value;
+  console.log(searchValue);
+});
+
 // To delete co-ops, uses DELETE to delete an entity from the server.
 const deleteCoop = (coop_number) => {
   const xhttp = new XMLHttpRequest();
