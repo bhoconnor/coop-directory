@@ -1,0 +1,54 @@
+<!-- FILE PURPOSE: This file creates a separate page with an HTML form for new co-ops to be submitted by users (not entirely needed) -->
+
+<div class="container">
+  <hr />
+  <h1>Create New Co-op</h1>
+  <hr />
+
+  <form action="http://localhost:3000/coop" method="POST">
+    <div class="form-group">
+      <label for="Number"
+        >Co-op ID Number (Format = CurrentYear-CoopName, eg,
+        2022-theLocal)</label
+      >
+      <input class="form-control" name="number" />
+    </div>
+
+    <div class="form-group">
+      <label for="Name">Co-op Name</label>
+      <input class="form-control" name="name"
+    </div>
+
+    <div class="form-group">
+      <label for="Date">Date today (Format = mm/dd/yyyy)</label>
+      <input class="form-control" name="date"
+    </div>
+
+    <div class="form-group">
+      <label for="firstName">First Name (of person submitting)</label>
+      <input class="form-control" name="firstName"
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name (of person submitting)</label>
+      <input class="form-control" name="lastName"
+    </div>
+
+    <div class="form-group">
+      <label for="Country">Country where Co-op is located</label>
+      <input class="form-control" name="country"
+    </div>
+
+    <div class="form-group">
+      <label for="City">City where Co-op is located</label>
+      <input class="form-control" name="city"
+    </div>
+
+    <div class="form-group">
+      <label for="Website">Co-op website</label>
+      <input class="form-control" name="website"
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

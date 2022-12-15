@@ -1,0 +1,155 @@
+<!-- FILE PURPOSE: To be used as a "template" for users to submit co-ops -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <div class="container">
+      <hr />
+      <hr />
+      <title>Cooperatives from Around the World</title>
+    </div>
+  </head>
+
+  <!-- Title section ------------------------------------------------------------>
+  <div class="wrapper">
+    <header>
+      <h1>Cooperatives from Around the World</h1>
+      <h4><em>Generated from users like you</em></h4>
+      <hr />
+      <hr />
+    </header>
+  </div>
+
+  <body>
+    <!-- Co-op Search section --------------------------------------------------->
+    <div>
+      <h2>Search for a Co-op below by name</h2>
+      <p>
+        <small
+          ><em
+            >* Be sure to search before submitting a new co-op to avoid
+            duplicates</em
+          ></small
+        >
+      </p>
+      <!-- Search form -->
+      <form id="searchForm">
+        <label for="search" Search: </label>
+        <input id="search" type="text" placeholder="Search by Co-op name" />
+        <button type="submit" name="submit" value="submit">Search</button>
+      </form>
+      <hr />
+    </div>
+
+    <!-- Co-op List section ------------------------------------------------------>
+    <div class="main">
+      <h2>List of Co-ops</h2>
+      <div>
+        <div class="row" id="coops"></div>
+      </div>
+    </div>
+
+    <!-- Co-op Submission section ------------------------------------------------->
+    <div id="editCoopModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Add Your Own Co-op</h2>
+            <!-- Not working -->
+
+            <!-- <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+          </div>
+
+          <!-- Form on site for users to submit new co-ops (coop-list.js has formatting for co-ops after submitted) -->
+          <div class="modal-body">
+            <form
+              id="editForm"
+              action="http://localhost:3000/coop"
+              method="POST"
+            >
+              <div class="form-group">
+                <label for="coop_number"
+                  ><strong>Co-op ID number</strong> (Format =
+                  CurrentYear-CoopName, no spaces; eg, 2022-theLocal):</label
+                >
+                <input
+                  class="form-control"
+                  name="coop_number"
+                  id="coop_number"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="Name"><strong>Co-op name</strong>:</label>
+                <input class="form-control" name="name" id="name" />
+              </div>
+
+              <div class="form-group">
+                <label for="Date"
+                  ><strong>Date today</strong> (Format = mm/dd/yyyy):</label
+                >
+                <input class="form-control" name="date" id="date"
+              </div>
+
+              <div class="form-group">
+                <label for="firstName"
+                  ><strong>First name</strong> (of person submitting):</label
+                >
+                <input class="form-control" name="firstName" id="firstName"
+              </div>
+
+              <div class="form-group">
+                <label for="lastName"
+                  ><strong>Last name</strong> (of person submitting):</label
+                >
+                <input class="form-control" name="lastName" id="lastName"
+              </div>
+
+              <div class="form-group">
+                <label for="Country"
+                  ><strong>Country where co-op is located</strong>:</label
+                >
+                <input class="form-control" name="country" id="country"
+              </div>
+
+              <div class="form-group">
+                <label for="City"
+                  ><strong>City where co-op is located</strong>:</label
+                >
+                <input class="form-control" name="city" id="city"
+              </div>
+
+              <div class="form-group">
+                <label for="Website"><strong>Co-op website</strong>:</label>
+                <input
+                  class="form-control"
+                  name="website"
+                  id="website"
+                  type="url"
+                  name="url"
+                  id="url"
+                  placeholder="https://example.com"
+                  pattern="https://.*"
+                  size="30"
+                  required
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our JS files -->
+    <script type="text/javascript" src="coop-list.js"></script>
+    <script type="text/javascript" src="coop-api.js"></script>
+  </body>
+</html>
