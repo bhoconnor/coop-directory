@@ -2,7 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <div class="container">
       <hr />
       <hr />
@@ -33,11 +37,27 @@
         >
       </p>
       <!-- Search form -->
-      <form id="searchForm">
-        <label for="search" Search: </label>
-        <input id="search" type="text" placeholder="Search by Co-op name" />
-        <button type="submit" name="submit" value="submit">Search</button>
-      </form>
+      <!-- <form id="searchForm" action="coops-filter" method="GET">
+        <label for="search">Search: </label>
+        <input
+          id="searchInput"
+          type="text"
+          name="name"
+          placeholder="Search by Co-op name"
+        />
+        <button type="submit">Search</button>
+      </form> -->
+      <div>
+        <label for="search">Search: </label>
+        <input
+          id="searchInput"
+          type="text"
+          name="name"
+          placeholder="Search by Co-op name"
+        />
+        <!-- If needed, put this code back in as button attribute: onclick="loadCoops(document.getElementById('searchInput').value)"-->
+        <button id="submitButton" type="submit">Search</button>
+      </div>
       <hr />
     </div>
 
@@ -71,6 +91,7 @@
             <form
               id="editForm"
               action="http://localhost:3000/coop"
+              target="_blank"
               method="POST"
             >
               <div class="form-group">
@@ -87,14 +108,20 @@
 
               <div class="form-group">
                 <label for="Name"><strong>Co-op name</strong>:</label>
-                <input class="form-control" name="name" id="name" />
+                <input
+                  class="form-control"
+                  name="name"
+                  id="name"
+                  title="name"
+                />
               </div>
 
               <div class="form-group">
                 <label for="Date"
                   ><strong>Date today</strong> (Format = mm/dd/yyyy):</label
                 >
-                <input class="form-control" name="date" id="date"
+                <input class="form-control" name="date" id="date" type="date"
+                title="date"
               </div>
 
               <div class="form-group">
@@ -116,13 +143,14 @@
                   ><strong>Country where co-op is located</strong>:</label
                 >
                 <input class="form-control" name="country" id="country"
+                title="country"
               </div>
 
               <div class="form-group">
                 <label for="City"
                   ><strong>City where co-op is located</strong>:</label
                 >
-                <input class="form-control" name="city" id="city"
+                <input class="form-control" name="city" id="city" title="city"
               </div>
 
               <div class="form-group">

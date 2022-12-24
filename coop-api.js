@@ -57,7 +57,7 @@ app.post("/coop", (req, res) => {
 
   // To send HTTP response about adding co-op
   res.send(
-    "Co-op is added to the database--click the back button & refresh to see it in the overall list."
+    "Co-op is added to the database--close this window & refresh the previous page to see it in the overall list."
   );
 });
 
@@ -72,100 +72,64 @@ app.post("/coop", (req, res) => {
 
 // // 3) If-else (eg, if there's a parameter, show that, if not leave what's there)...in written form, it might be, i'll try if searchValue != "" then...
 
-// // EDIT 2: Tried addEventListener outside app.get PLUS if-else
+// // EDIT 2: With if-else
 
-// // To get all coops from API AND to execute filter
-// app.get("/coops-filter", (req, res) => {
-//   // No longer need below line, since we're using the database.
-//   // res.json(coops);
-
-//   if (coop_name.toLowerCase().includes(searchValueString.toLowerCase())) {
-//     // Show search results on page
-//     db.all(
-//       `SELECT * FROM coops WHERE name='{req.params.name}'`,
-//       (err, rows) => {
-//         console.log(JSON.stringify(rows));
-//         // Create an empty array to store the co-ops we get from database
-//         let coopsFromDb = [];
-//         // Add each row from the database tables to the array
-//         for (let row of rows) {
-//           coopsFromDb.push({
-//             coop_number: row.coop_number,
-//             name: row.coop_name,
-//             date: row.date_now,
-//             firstName: row.submitter_first_name,
-//             lastName: row.submitter_last_name,
-//             country: row.coop_country,
-//             city: row.coop_city,
-//             website: row.coop_website,
-//           });
-//         }
-//       }
-//     );
-//   } else {
-//     // ORIGINAL To get all coops from API
-//     app.get("/coops", (req, res) => {
-//       // No longer need below line, since we're using the database.
-//       // res.json(coops);
-
-//       db.all("SELECT * FROM coops", (err, rows) => {
-//         console.log(JSON.stringify(rows));
-//         // Create an empty array to store the co-ops we get from database
-//         let coopsFromDb = [];
-//         // Add each row from the database tables to the array
-//         for (let row of rows) {
-//           coopsFromDb.push({
-//             coop_number: row.coop_number,
-//             name: row.coop_name,
-//             date: row.date_now,
-//             firstName: row.submitter_first_name,
-//             lastName: row.submitter_last_name,
-//             country: row.coop_country,
-//             city: row.coop_city,
-//             website: row.coop_website,
-//           });
-//         }
-//       });
-//     });
-
-// // EDIT 1: Tried only addEventListener, no if-then
-// // To get all coops from API AND to execute filter.
-// app.get("/coops", (req, res) => {
-//   // No longer need below line, since we're using the database.
-//   // res.json(coops);
-
-//   // Form variable
-//   const form = document.getElementById("searchForm");
-
-//   // Event listener for Search submission
-//   form.addEventListener('submit', (e) => {
-//     // Prevent form input from being lost after submission
-//     e.preventDefault();
-//     // Search variables
-//     const searchValue = document.getElementById("search").value;
-//     const searchValueString = JSON.stringify(searchValue);
-//     console.log(searchValueString);
-
-//     // Search results on page
-//     db.all("SELECT * FROM coops WHERE name=req.params.name", (err, rows) => {
-//       console.log(JSON.stringify(rows));
-//       // Create an empty array to store the co-ops we get from database
-//       let coopsFromDb = [];
-//       // Add each row from the database tables to the array
-//       for (let row of rows) {
-//         coopsFromDb.push({
-//           coop_number: row.coop_number,
-//           name: row.coop_name,
-//           date: row.date_now,
-//           firstName: row.submitter_first_name,
-//           lastName: row.submitter_last_name,
-//           country: row.coop_country,
-//           city: row.coop_city,
-//           website: row.coop_website,
-//         });
-//   }
-
-//     })
+// Receiving the GET request from the browser (in coop-list.js), which is requesting filtered co-ops from API based on search term (or based on no search term if there isn't one (which is considered "undefined" below))
+app.get("/coops-filter", (req, res) => {
+  // No longer need below line, since we're using the database.
+  // res.json(coops);
+  console.log(JSON.stringify(req.query));
+  if (req.query.name != undefined) {
+    // Show search results on page
+    db.all(
+      // Selection below includes "like" operator to allow for search terms to equal part of a name (https://www.w3schools.com/sql/sql_like.asp); the % symbols allow for whatever other terms in database before & after query name search.
+      `SELECT * FROM coops WHERE UPPER(coop_name) like '%${req.query.name.toUpperCase()}%'`,
+      (err, rows) => {
+        console.log(err);
+        console.log(JSON.stringify(rows));
+        // Create an empty array to store the co-ops we get from database
+        let coopsFromDb = [];
+        // Add each row from the database tables to the array
+        for (let row of rows) {
+          coopsFromDb.push({
+            coop_number: row.coop_number,
+            name: row.coop_name,
+            date: row.date_now,
+            firstName: row.submitter_first_name,
+            lastName: row.submitter_last_name,
+            country: row.coop_country,
+            city: row.coop_city,
+            website: row.coop_website,
+          });
+        }
+        // return those elements
+        res.json(coopsFromDb);
+      }
+    );
+  } else {
+    // ORIGINAL To get all coops from API
+    db.all("SELECT * FROM coops", (err, rows) => {
+      console.log(JSON.stringify(rows));
+      // Create an empty array to store the co-ops we get from database
+      let coopsFromDb = [];
+      // Add each row from the database tables to the array
+      for (let row of rows) {
+        coopsFromDb.push({
+          coop_number: row.coop_number,
+          name: row.coop_name,
+          date: row.date_now,
+          firstName: row.submitter_first_name,
+          lastName: row.submitter_last_name,
+          country: row.coop_country,
+          city: row.coop_city,
+          website: row.coop_website,
+        });
+      }
+      // return those elements
+      res.json(coopsFromDb);
+    });
+  }
+});
 
 // // ORIGINAL To get all coops from API
 app.get("/coops", (req, res) => {
@@ -196,9 +160,9 @@ app.get("/coops", (req, res) => {
 });
 // Edit a given co-op
 // Never got this to work...
-app.post("/coop/:coop.coop_number", (req, res) => {
+app.post("/coop/:coop_number", (req, res) => {
   // Reading co-op number from the URL
-  const coop_number = req.params.coop.coop_number;
+  const coop_number = req.params.coop_number;
   const newCoop = req.body;
 
   // Remove item from the coops array
@@ -214,9 +178,9 @@ app.post("/coop/:coop.coop_number", (req, res) => {
 
 // Use URL with coop_number to retrieve a specific co-op
 // Never got this to work...
-app.get("/coop/:coop.coop_number", (req, res) => {
+app.get("/coop/:coop_number", (req, res) => {
   // Reading coop_number from the URL
-  const coop_number = req.params.coop.coop_number;
+  const coop_number = req.params.coop_number;
 
   // Searching co-ops for the coop_number
   for (let coop of coops) {
