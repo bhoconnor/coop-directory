@@ -1,4 +1,8 @@
-// FILE PURPOSE: Main API code
+// FILE PURPOSE: Main API code, on the server side as they always are, has various functions such as receiving new co-ops to add to database, sending co-ops in database to browser, deleting co-ops, as well as initiating overall Express app & database, etc.
+
+// ****************************************************************************************************************
+// Setting up middleware and related tools (eg, Express framework, SQLite, etc.).
+// ****************************************************************************************************************
 
 // No longer need jsdom
 // // To import & use jsdom to allow a version of the DOM
@@ -7,12 +11,14 @@
 // const dom = new JSDOM(`<!DOCTYPE html><p>Test</p>`);
 // console.log(dom.window.document.querySelector("p").textContent);
 
-// To import the Express framework
+// To import the Express framework (which is how Node communicates over the web)
 const express = require("express");
 // Middleware that helps decode the body from an HTTP request
 const bodyParser = require("body-parser");
 // Middleware that helps because the API will be called from different locations (CORS = cross-origin resource sharing)
 const cors = require("cors");
+// Middleware that allows to serve static CSS files to the clients
+const path = require("path");
 
 // To set up SQLite as database
 const sqlite3 = require("sqlite3").verbose();
@@ -23,8 +29,8 @@ const db = new sqlite3.Database("primary.db");
 const app = express();
 const port = 3000;
 
-// Where co-ops will be kept
-let coops = [];
+// // Array where co-ops will be kept (not needed b/c using database)
+// let coops = [];
 
 app.use(cors());
 
@@ -32,49 +38,51 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 // Used when requesting a resource using jQuery or backend REST client
 app.use(bodyParser.json());
-
 // To host the front-end files
 app.use(express.static("html"));
+// To serve the static (at least CSS) files to the clients
+app.use(express.static(path.join(__dirname, "public")));
 
-// To add a new coop to the coop array
+// ****************************************************************************************************************
+// TO ADD A NEW COOP TO THE COOP DATABASE
+// ****************************************************************************************************************
+
+// Below receives new co-op submission POST request (req) from browser/index.html
 app.post("/coop", (req, res) => {
-  // Variable for body
+  // Variable for body within request from browser
   const coop = req.body;
 
-  // Output the coop to the console for debugging
-  console.log(coop);
+  // // Output the coop to the console for debugging
+  // console.log(coop)
   // Commented out below eventually since using SQL & didn't need after all
   // coops.push(coop);
 
-  // This INSERT INTO statement adds a row to tables (first list is column names, 2nd is values)
-  let sql = `insert into coops (coop_number, coop_name, date_now, submitter_first_name, submitter_last_name, coop_country, coop_city, coop_website) VALUES (?, '${coop.name}', '${coop.date}', '${coop.firstName}','${coop.lastName}', '${coop.country}', '${coop.city}', '${coop.website}');`;
+  // This INSERT INTO statement adds a row to tables (first list is column names in SQL, 2nd is ID names in index.html)
+  let sql = `insert into coops (coop_name, coop_type, platform_coop, industry, date_now, submitter_first_name, submitter_last_name, coop_country, coop_city, coop_website) VALUES ('${coop.name}', '${coop.coopType}', '${coop.platformCoop}', '${coop.industry}', '${coop.date}', '${coop.firstName}','${coop.lastName}', '${coop.country}', '${coop.city}', '${coop.website}');`;
 
-  // Dump sql to check
+  // Dump sql to check for problems or errors
   console.log(sql);
 
-  // Run sql query
-  db.run(sql, coop.coop_number);
-
-  // To send HTTP response about adding co-op
-  res.send(
-    "Co-op is added to the database--close this window & refresh the previous page to see it in the overall list."
-  );
+  // Run sql query above to insert new co-op info into database (value/parameter after comma is pulled into list of values above in place of ?, if decide need parameter at whatever point); if duplicate co-op name error, then send error message, otherwise send success message.
+  db.run(sql, (err) => {
+    if (err) {
+      // To send HTTP response about adding co-op (eventually handle the below 2 messages via HTML when posted)
+      res.send(
+        "Sorry that co-op is already in our system--close this window if you would like to return to the previous page."
+      );
+    } else {
+      res.send(
+        "Co-op is added to the database--close this window & refresh the previous page to see it in the overall list."
+      );
+    }
+  });
 });
 
-// // ADDED//////////////////////////////////////////////////////////
-// // To stringify searchValue from browser
-// const searchValueString = JSON.stringify(searchValue);
+// ****************************************************************************************************************
+// TO SEND EXISTING COOPS IN DATABASE TO BROWSER BASED ON SEARCH VALUE
+// ****************************************************************************************************************
 
-// // [TEMP COMMENT] STEPS TO SET UP FILTER:
-// // 1) Change "SELECT * FROM" command to "SELECT * FROM coops WHERE name=req.params.name" (and convert name to string literal to make a variable) so it selects based on what's searched;
-
-// // 2) [DONE] Build raw HTML Search;
-
-// // 3) If-else (eg, if there's a parameter, show that, if not leave what's there)...in written form, it might be, i'll try if searchValue != "" then...
-
-// // EDIT 2: With if-else
-
-// Receiving the GET request from the browser (in coop-list.js), which is requesting filtered co-ops from API based on search term (or based on no search term if there isn't one (which is considered "undefined" below))
+// Below receives the GET request (req) from the browser (in coop-list.js), which is requesting filtered co-ops from API based on search term (or based on no search term if there isn't one (which is considered "undefined" below))
 app.get("/coops-filter", (req, res) => {
   // No longer need below line, since we're using the database.
   // res.json(coops);
@@ -94,6 +102,9 @@ app.get("/coops-filter", (req, res) => {
           coopsFromDb.push({
             coop_number: row.coop_number,
             name: row.coop_name,
+            coop_type: row.coop_type,
+            platform_coop: row.platform_coop,
+            industry: row.industry,
             date: row.date_now,
             firstName: row.submitter_first_name,
             lastName: row.submitter_last_name,
@@ -107,7 +118,7 @@ app.get("/coops-filter", (req, res) => {
       }
     );
   } else {
-    // ORIGINAL To get all coops from API
+    // Show all coops on page
     db.all("SELECT * FROM coops", (err, rows) => {
       console.log(JSON.stringify(rows));
       // Create an empty array to store the co-ops we get from database
@@ -117,6 +128,9 @@ app.get("/coops-filter", (req, res) => {
         coopsFromDb.push({
           coop_number: row.coop_number,
           name: row.coop_name,
+          coop_type: row.coop_type,
+          platform_coop: row.platform_coop,
+          industry: row.industry,
           date: row.date_now,
           firstName: row.submitter_first_name,
           lastName: row.submitter_last_name,
@@ -131,68 +145,45 @@ app.get("/coops-filter", (req, res) => {
   }
 });
 
-// // ORIGINAL To get all coops from API
-app.get("/coops", (req, res) => {
-  // No longer need below line, since we're using the database.
-  // res.json(coops);
-
-  db.all("SELECT * FROM coops", (err, rows) => {
-    console.log(JSON.stringify(rows));
-    // Create an empty array to store the co-ops we get from database
-    let coopsFromDb = [];
-    // Add each row from the database tables to the array
-    for (let row of rows) {
-      coopsFromDb.push({
-        coop_number: row.coop_number,
-        name: row.coop_name,
-        date: row.date_now,
-        firstName: row.submitter_first_name,
-        lastName: row.submitter_last_name,
-        country: row.coop_country,
-        city: row.coop_city,
-        website: row.coop_website,
-      });
-    }
-
-    // return those elements
-    res.json(coopsFromDb);
-  });
-});
-// Edit a given co-op
+// Edit a given co-op (only was needed when we were using an array instead of a database)
 // Never got this to work...
-app.post("/coop/:coop_number", (req, res) => {
-  // Reading co-op number from the URL
-  const coop_number = req.params.coop_number;
-  const newCoop = req.body;
+// app.post("/coop/:coop_number", (req, res) => {
+//   // Reading co-op number from the URL
+//   const coop_number = req.params.coop_number;
+//   const newCoop = req.body;
 
-  // Remove item from the coops array
-  for (let i = 0; i < coops.length; i++) {
-    let coop = coops[i];
-    if (coop.coop_number === coop_number) {
-      coops[i] = newCoop;
-    }
-  }
+//   // Remove item from the coops array
+//   for (let i = 0; i < coops.length; i++) {
+//     let coop = coops[i];
+//     if (coop.coop_number === coop_number) {
+//       coops[i] = newCoop;
+//     }
+//   }
 
-  res.send("Co-op is edited");
-});
+//   res.send("Co-op is edited");
+// });
 
-// Use URL with coop_number to retrieve a specific co-op
-// Never got this to work...
-app.get("/coop/:coop_number", (req, res) => {
-  // Reading coop_number from the URL
-  const coop_number = req.params.coop_number;
+// Use URL with coop_number to retrieve a specific co-op (could return to this to make work w/database instead of array eventually)
+// // Never got this to work...
+// app.get("/coop/:coop_number", (req, res) => {
+//   // Reading coop_number from the URL
+//   const coop_number = req.params.coop_number;
 
-  // Searching co-ops for the coop_number
-  for (let coop of coops) {
-    if (coop.coop_number === coop_number) {
-      res.json(coop);
-      return;
-    }
-  }
+//   // Searching co-ops for the coop_number (again only would've been needed when using an array instead of database)
+//   for (let coop of coops) {
+//     if (coop.coop_number === coop_number) {
+//       res.json(coop);
+//       return;
+//     }
+//   }
 
-  // Sending 404 when not found
-  res.status(404).send("Co-op not found");
-});
+//   // Sending 404 when not found
+//   res.status(404).send("Co-op not found");
+// });
+
+// ****************************************************************************************************************
+// TO DELETE COOPS FROM THE DATABASE
+// ****************************************************************************************************************
 
 app.delete("/coop/:coop_number", (req, res) => {
   // Defining variable coop_number for end of above URL
@@ -211,11 +202,15 @@ app.delete("/coop/:coop_number", (req, res) => {
   res.send("Co-op is deleted");
 });
 
-// Creates the table each time if it doesn't exist yet
+// ****************************************************************************************************************
+// Creates the table each time if table doesn't exist yet already (assigning coop_number based on autoincrement)
+// ****************************************************************************************************************
+
 db.run(
-  "CREATE TABLE if not exists coops (coop_number TEXT, coop_name TEXT, date_now TEXT, submitter_first_name TEXT, submitter_last_name TEXT, coop_country TEXT, coop_city TEXT, coop_website TEXT)"
+  "CREATE TABLE if not exists coops (coop_number INTEGER PRIMARY KEY AUTOINCREMENT, coop_name TEXT UNIQUE, coop_type TEXT, platform_coop TEXT, industry TEXT, date_now TEXT, submitter_first_name TEXT, submitter_last_name TEXT, coop_country TEXT, coop_city TEXT, coop_website TEXT)"
 );
 
+// BELOW STARTS ACTUAL API BY INSTRUCTING ABOVE APP TO LISTEN ON A PORT FOR ABOVE ENDPOINTS
 app.listen(port, () =>
   console.log(`Hello world app listening on port ${port}!`)
 );
