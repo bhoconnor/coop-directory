@@ -47,7 +47,7 @@ const loadCoops = (searchValue) => {
   // Parsing JSON-formatted response text back from server (includes some or all co-ops depending on Search term)
   const coops = JSON.parse(xhttp.responseText);
 
-  // TESTING setting innerHTML back to empty
+  // Sets innerHTML back to empty
   document.getElementById("coops").innerHTML = "";
 
   // Using response text from server to display co-ops
@@ -98,21 +98,12 @@ const loadCoops = (searchValue) => {
   }
 };
 
-// SUMMARY:
-
-// 1) Trying to get one of the below to work, & also to see if window.location.reload(); can be used in any of them.
-
-// 2) Can currently only get: 1) all the co-ops to show; 2) only the search term-based co-ops to show; or 3) all the co-ops & the search term-based co-ops, & each search just adds to the list, doesn't replace it.
-
-// 3) The 2 uncommented sections below together lead to scenario 3 above, albeit in a messy, over-coded way...all the commented out sections below that are attempts tried so far.
-
-// 4) Seems my logic may be wrong. The logic scenario as i tried to write it out that i believe we want is: All co-ops show when first loaded. Then if someone types into search box & clicks Search button, server sends back new list of matching co-ops to replace old list--but not sure how to replace an old list...and/or how to use the location.reload(); function in some way...
-
 // ****************************************************************************************************************
 // TO LOAD CO-OPS BASED ON OVERALL LIST OF CO-OPS *AND* SEARCH TERMS.//////////////////////////////////////////////
 // ****************************************************************************************************************
+// The logic implemented below is something to the effect of: All co-ops show when first loaded. Then if someone types into search box & clicks Search button, server sends back new list of matching co-ops to replace old list.
 
-// Below only working to show all co-ops, but not adding to list based on search
+// Below shows all co-ops, replacing whatever was shown before based on section above that sets innerHTML back to empty
 if (input.value) {
   // Load co-ops WITH a search
   button.addEventListener("click", (e) => {
@@ -125,7 +116,7 @@ if (input.value) {
   loadCoops(input.value);
 }
 
-// Below only working to show co-ops based on search, but keeps adding to list doesn't replace & doesn't show all co-ops at any point
+// Below shows co-ops based on search, replacing whatever was shown before based on section above that sets innerHTML back to empty
 if (document.readyState === "complete") {
   // Load co-ops WITH a search
   // Event listener for Search submission
