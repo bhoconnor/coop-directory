@@ -23,8 +23,6 @@ const input = document.getElementById("searchInput");
 const searchValue = input.value;
 // Button variable
 const button = document.getElementById("submitButton");
-// Console.log not working, why not?
-console.log("Search value:", `${searchValue}`);
 
 // ****************************************************************************************************************
 // To retrieve co-ops, *based on search value* if applicable, using GET to request data from the server.///////////////////////////////////////////
@@ -133,3 +131,17 @@ if (document.readyState === "complete") {
     loadCoops(input.value);
   };
 }
+
+// ****************************************************************************************************************
+// COPYRIGHT & FOOTER////////////////////////////////////////////////////////////////////////////////////
+// ****************************************************************************************************************
+// Relevant variables
+const today = new Date();
+const thisYear = today.getFullYear();
+const footer = document.querySelector("footer");
+const copyright = document.createElement("p");
+
+// Copyright
+copyright.innerHTML = "&nbsp;&nbsp;&copy; Brendan O'Connor, " + thisYear;
+// Append copyright to footer
+footer.appendChild(copyright);
