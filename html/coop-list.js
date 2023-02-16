@@ -53,6 +53,7 @@ const loadCoops = (searchValue) => {
   // Using response text from server to display co-ops
   for (let coop of coops) {
     // Sections for entries to display in website cards (after already entered by user in index.html)
+    // NOTE: Names below come from adding row names to prefix "coop." based on row names in coop-api.js (in the section with the header starting "TO SEND EXISTING COOPS IN DATABASE")
     const x = `
       <div class="col-4 tab">
         <div class="card">  
@@ -60,8 +61,8 @@ const loadCoops = (searchValue) => {
             <h3 class="card-title"><u>Co-op name</u>: ${coop.name}</h3>
 
             <div><em>Co-op basics</em></div>
-            <div><strong>Co-op Type</strong>: ${coop.coopType}</div>
-            <div><strong>Platform Co-op?</strong> ${coop.platformCoop}</div>
+            <div><strong>Co-op Type</strong>: ${coop.coop_type}</div>
+            <div><strong>Platform Co-op?</strong> ${coop.platform_coop}</div>
             <div><strong>Industry</strong>: ${coop.industry}</div>
             <div><strong>Country where co-op is located</strong>: ${coop.country}</div>
             <div><strong>City where co-op is located</strong>: ${coop.city}</div>
@@ -72,7 +73,7 @@ const loadCoops = (searchValue) => {
             <div><em>Submission details</em></div>
             <div><strong>Co-op submission number</strong>: ${coop.coop_number}</div>
             <div><strong>Date of submission</strong>: ${coop.date}</div>
-            <div><strong>Name</strong> (of person who submitted): ${coop.firstName} ${coop.lastName}</div>
+            <div><strong>Name</strong> (of person who submitted): ${coop.first_Name} ${coop.last_Name}</div>
             
             </br>
 
@@ -103,7 +104,7 @@ const loadCoops = (searchValue) => {
 // ****************************************************************************************************************
 // The logic implemented below is something to the effect of: All co-ops show when first loaded. Then if someone types into search box & clicks Search button, server sends back new list of matching co-ops to replace old list.
 
-// Below shows all co-ops, replacing whatever was shown before based on section above that sets innerHTML back to empty
+// Below shows *all co-ops*, replacing whatever was shown before based on section above that sets innerHTML back to empty
 if (input.value) {
   // Load co-ops WITH a search
   button.addEventListener("click", (e) => {
@@ -116,7 +117,7 @@ if (input.value) {
   loadCoops(input.value);
 }
 
-// Below shows co-ops based on search, replacing whatever was shown before based on section above that sets innerHTML back to empty
+// Below shows co-ops *based on search*, replacing whatever was shown before based on section above that sets innerHTML back to empty
 if (document.readyState === "complete") {
   // Load co-ops WITH a search
   // Event listener for Search submission
