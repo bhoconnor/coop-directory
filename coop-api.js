@@ -51,8 +51,8 @@ app.post("/coop", (req, res) => {
   // This INSERT INTO statement adds a row to tables (first list is column names in SQL, 2nd is ID names in index.html)
   let sql = `insert into coops (coop_name, coop_type, platform_coop, industry, date_now, submitter_first_name, submitter_last_name, coop_country, coop_city, coop_website) VALUES ('${coop.name}', '${coop.coopType}', '${coop.platformCoop}', '${coop.industry}', '${coop.date}', '${coop.firstName}','${coop.lastName}', '${coop.country}', '${coop.city}', '${coop.website}');`;
 
-  // Dump sql to check for problems or errors
-  console.log(sql);
+  // Dump sql to check for problems or errors (turn on when needed)
+  // console.log(sql);
 
   // Run sql query above to insert new co-op info into database (value/parameter after comma is pulled into list of values above in place of ?, if decide need parameter at whatever point); if duplicate co-op name error, then send error message, otherwise send success message.
   db.run(sql, (err) => {
@@ -77,15 +77,15 @@ app.post("/coop", (req, res) => {
 app.get("/coops-filter", (req, res) => {
   // No longer need below line, since we're using the database.
   // res.json(coops);
-  console.log(JSON.stringify(req.query));
+  // console.log(JSON.stringify(req.query));
   if (req.query.name != undefined) {
     // Show search results on page
     db.all(
       // Selection below includes "like" operator to allow for search terms to equal part of a name (https://www.w3schools.com/sql/sql_like.asp); the % symbols allow for whatever other terms in database before & after query name search.
       `SELECT * FROM coops WHERE UPPER(coop_name) like '%${req.query.name.toUpperCase()}%'`,
       (err, rows) => {
-        console.log(err);
-        console.log(JSON.stringify(rows));
+        // console.log(err);
+        // console.log(JSON.stringify(rows));
         // Create an empty array to store the co-ops we get from database
         let coopsFromDb = [];
         // Add each row from the database tables to the array
@@ -111,7 +111,7 @@ app.get("/coops-filter", (req, res) => {
   } else {
     // Show all coops on page
     db.all("SELECT * FROM coops", (err, rows) => {
-      console.log(JSON.stringify(rows));
+      // console.log(JSON.stringify(rows));
       // Create an empty array to store the co-ops we get from database
       let coopsFromDb = [];
       // Add each row from the database tables to the array

@@ -5,7 +5,7 @@ body {
 }
 
 /* **************************************************************************************************************** */
-/* Banner at top */
+/* Banner at top & bottom */
 
 /* Banner color around text */
 .banner-color {
@@ -69,4 +69,18 @@ select option[value=""] {
 /*Added for browser compatibility*/
 [hidden] {
   display: none;
+}
+
+/* FOOTER-RELATED CLASS SELECTORS **********************************************************/
+.padding-top-main-parts {
+  padding-top: 0.15em;
+}
+
+.padding-bottom-main-parts {
+  padding-bottom: 0.25em;
+}
+
+/* mainly for footer to show green at bottom */
+.corrected-margin-bottom {
+  margin-bottom: 2%;
 }
