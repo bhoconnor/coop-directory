@@ -4,16 +4,9 @@
 // Setting up middleware and related tools (eg, Express framework, SQLite, etc.).
 // ****************************************************************************************************************
 
-// No longer need jsdom
-// // To import & use jsdom to allow a version of the DOM
-// const jsdom = require("jsdom");
-// const { JSDOM } = jsdom;
-// const dom = new JSDOM(`<!DOCTYPE html><p>Test</p>`);
-// console.log(dom.window.document.querySelector("p").textContent);
-
 // To import the Express framework (which is how Node communicates over the web)
 const express = require("express");
-// Middleware that helps decode the body from an HTTP request
+// Middleware that helps decode the body from an HTTP request`
 const bodyParser = require("body-parser");
 // Middleware that helps because the API will be called from different locations (CORS = cross-origin resource sharing)
 const cors = require("cors");
@@ -54,8 +47,6 @@ app.post("/coop", (req, res) => {
 
   // // Output the coop to the console for debugging
   // console.log(coop)
-  // Commented out below eventually since using SQL & didn't need after all
-  // coops.push(coop);
 
   // This INSERT INTO statement adds a row to tables (first list is column names in SQL, 2nd is ID names in index.html)
   let sql = `insert into coops (coop_name, coop_type, platform_coop, industry, date_now, submitter_first_name, submitter_last_name, coop_country, coop_city, coop_website) VALUES ('${coop.name}', '${coop.coopType}', '${coop.platformCoop}', '${coop.industry}', '${coop.date}', '${coop.firstName}','${coop.lastName}', '${coop.country}', '${coop.city}', '${coop.website}');`;
@@ -106,8 +97,8 @@ app.get("/coops-filter", (req, res) => {
             platform_coop: row.platform_coop,
             industry: row.industry,
             date: row.date_now,
-            firstName: row.submitter_first_name,
-            lastName: row.submitter_last_name,
+            first_Name: row.submitter_first_name,
+            last_Name: row.submitter_last_name,
             country: row.coop_country,
             city: row.coop_city,
             website: row.coop_website,
@@ -132,8 +123,8 @@ app.get("/coops-filter", (req, res) => {
           platform_coop: row.platform_coop,
           industry: row.industry,
           date: row.date_now,
-          firstName: row.submitter_first_name,
-          lastName: row.submitter_last_name,
+          first_Name: row.submitter_first_name,
+          last_Name: row.submitter_last_name,
           country: row.coop_country,
           city: row.coop_city,
           website: row.coop_website,
@@ -145,42 +136,6 @@ app.get("/coops-filter", (req, res) => {
   }
 });
 
-// Edit a given co-op (only was needed when we were using an array instead of a database)
-// Never got this to work...
-// app.post("/coop/:coop_number", (req, res) => {
-//   // Reading co-op number from the URL
-//   const coop_number = req.params.coop_number;
-//   const newCoop = req.body;
-
-//   // Remove item from the coops array
-//   for (let i = 0; i < coops.length; i++) {
-//     let coop = coops[i];
-//     if (coop.coop_number === coop_number) {
-//       coops[i] = newCoop;
-//     }
-//   }
-
-//   res.send("Co-op is edited");
-// });
-
-// Use URL with coop_number to retrieve a specific co-op (could return to this to make work w/database instead of array eventually)
-// // Never got this to work...
-// app.get("/coop/:coop_number", (req, res) => {
-//   // Reading coop_number from the URL
-//   const coop_number = req.params.coop_number;
-
-//   // Searching co-ops for the coop_number (again only would've been needed when using an array instead of database)
-//   for (let coop of coops) {
-//     if (coop.coop_number === coop_number) {
-//       res.json(coop);
-//       return;
-//     }
-//   }
-
-//   // Sending 404 when not found
-//   res.status(404).send("Co-op not found");
-// });
-
 // ****************************************************************************************************************
 // TO DELETE COOPS FROM THE DATABASE
 // ****************************************************************************************************************
@@ -188,14 +143,6 @@ app.get("/coops-filter", (req, res) => {
 app.delete("/coop/:coop_number", (req, res) => {
   // Defining variable coop_number for end of above URL
   const coop_number = req.params.coop_number;
-  // Not needed anymore because we are reading from sql
-  // // Remove item from the coops array
-  // coops = coops.filter(i => {
-  //     if (i.coop_number !== coop_number) {
-  //         return true;
-  //     }
-  //     return false;
-  // });
 
   db.run(`delete from coops where coop_number='${coop_number}'`);
 
