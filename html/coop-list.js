@@ -5,9 +5,13 @@
 // ****************************************************************************************************************
 
 const deleteCoop = (coop_number) => {
+  // Creating new object for request
   const xhttp = new XMLHttpRequest();
 
+  // Opening request to server (coop-api.js)
   xhttp.open("DELETE", `http://localhost:3000/coop/${coop_number}`, false);
+
+  // Sending request to server
   xhttp.send();
 
   // Reload the page
@@ -45,12 +49,13 @@ const loadCoops = (searchValue) => {
   // Parsing JSON-formatted response text back from server (includes some or all co-ops depending on Search term)
   const coops = JSON.parse(xhttp.responseText);
 
-  // Sets innerHTML back to empty
+  // Sets innerHTML back to empty (so doesn't keep adding new searched items or database list to co-ops on screen)
   document.getElementById("coops").innerHTML = "";
 
   // Using response text from server to display co-ops
   for (let coop of coops) {
     // Sections for entries to display in website cards (after already entered by user in index.html)
+
     // NOTE: Names below come from adding row names to prefix "coop." based on row names in coop-api.js (in the section with the header starting "TO SEND EXISTING COOPS IN DATABASE")
     const x = `
       <div class="col-4 tab">
@@ -87,9 +92,6 @@ const loadCoops = (searchValue) => {
         </div>
       </div>
     `;
-
-    // Removed this Edit button from where had it originally, right under Delete button above, until can work on it more:
-    // <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editCoopModal onclick="setEditModal('${coop.coop_number}')">Edit (not currently working)</button>
 
     // With each co-op of the overall co-ops list of response text from the server, insert the "x" variable version of it above into index.html (into "Co-op List section" with ID "coops"), then after it, add each additional co-op in that response text one at a time.
     document.getElementById("coops").innerHTML =
