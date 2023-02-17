@@ -1,0 +1,90 @@
+/* **************************************************************************************************************** */
+/* Body color */
+body {
+  background-color: rgba(128, 128, 128, 0.545);
+}
+
+/* **************************************************************************************************************** */
+/* Banner at top & bottom */
+
+/* Banner color around text */
+.banner-color {
+  border: yellow;
+  border-top-color: yellow;
+  background-color: yellow;
+  width: 100vw;
+}
+
+/* Banner color, etc. around HR lines */
+.black-hr-lines {
+  margin-top: 0.35%;
+  border-top: 0%;
+  padding-top: 0%;
+  background-color: darkslategray;
+  border-color: darkslategray;
+  margin-bottom: 0%;
+  border-bottom: 0%;
+  padding-bottom: 0%;
+  width: 100vw;
+}
+
+#large-top-banner {
+  margin-top: 0%;
+  border-top: 0%;
+  padding-top: 2%;
+  padding-bottom: 0%;
+  border-top: 0%;
+  margin-bottom: 0%;
+  margin-left: 0.5%;
+  width: 100vw;
+}
+
+#small-top-banner {
+  margin-top: 0%;
+  padding-top: 0.5%;
+  padding-bottom: 0%;
+  margin-left: 0.5%;
+  width: 100vw;
+}
+
+.mini-banner {
+  color: gray;
+}
+
+/* **************************************************************************************************************** */
+/* Setting indent / tab */
+/* Not currently working */
+.tab {
+  text-indent: 20px;
+}
+
+/* **************************************************************************************************************** */
+/* Dropdown select option coloring & styling */
+select,
+select option {
+  color: #000000;
+}
+
+select,
+select option[value=""] {
+  color: #999999;
+}
+
+/*Added for browser compatibility*/
+[hidden] {
+  display: none;
+}
+
+/* FOOTER-RELATED CLASS SELECTORS **********************************************************/
+.padding-top-main-parts {
+  padding-top: 0.15em;
+}
+
+.padding-bottom-main-parts {
+  padding-bottom: 0.25em;
+}
+
+/* mainly for footer to show green at bottom */
+.corrected-margin-bottom {
+  margin-bottom: 2%;
+}

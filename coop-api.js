@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 // To host the front-end files
 app.use(express.static("html"));
 // To serve the static (at least CSS) files to the clients
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "html")));
 
 // ****************************************************************************************************************
 // TO ADD A NEW COOP TO THE COOP DATABASE
