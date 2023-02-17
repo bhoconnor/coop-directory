@@ -54,7 +54,7 @@ app.post("/coop", (req, res) => {
   // Dump sql to check for problems or errors (turn on when needed)
   // console.log(sql);
 
-  // Run sql query above to insert new co-op info into database (value/parameter after comma is pulled into list of values above in place of ?, if decide need parameter at whatever point); if duplicate co-op name error, then send error message, otherwise send success message.
+  // Run sql query above to insert new co-op info into database; if duplicate co-op name error (because database requires coop_name to be a unique value), then send error message, otherwise send success message.
   db.run(sql, (err) => {
     if (err) {
       // To send HTTP response about adding co-op (eventually handle the below 2 messages via HTML when posted)
