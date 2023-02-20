@@ -1,6 +1,8 @@
 # Description
 
-**I am a big fan of co-ops.** This project is a beta site for a user-generated, global directory of cooperatives--see the sample site deployed at https://bhoconnor.github.io/coop-directory, but note that you will need to follow the instructions below to see the full working project, utilizing a SQLite database, node.js, etc. As the site notes, there are various other useful sites for finding co-ops as well, and most of those directories are listed on this Democracy at Work site: https://www.democracyatwork.info/finding_co_ops
+**I am a big fan of co-ops.** This project is a beta site for a user-generated, global directory of cooperatives--see the sample site deployed at [bhoconnor.github.io/coop-directory](https://bhoconnor.github.io/coop-directory), but note that you will need to follow the instructions below to see the full working project, utilizing a SQLite database, node.js, etc. You can also see [a video of the working site here](https://youtu.be/y9jDOc69r_g)</a>.
+
+As the site notes, there are various other useful sites for finding co-ops as well, and most of those directories are listed on this Democracy at Work site: [www.democracyatwork.info/finding_co_ops](https://www.democracyatwork.info/finding_co_ops)
 
 # Prerequisites
 
