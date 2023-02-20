@@ -1,3 +1,5 @@
+<base target="_blank">
+
 # Description
 
 **I am a big fan of co-ops.** This project is a beta site for a user-generated, global directory of cooperatives--see the sample site deployed at [bhoconnor.github.io/coop-directory](https://bhoconnor.github.io/coop-directory), but note that you will need to follow the instructions below to see the full working project, utilizing a SQLite database, node.js, etc. You can also see [a video of the working site here](https://youtu.be/y9jDOc69r_g)</a>.
