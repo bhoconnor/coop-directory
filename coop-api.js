@@ -75,8 +75,6 @@ app.post("/coop", (req, res) => {
 
 // Below receives the GET request (req) from the browser (in coop-list.js), which is requesting filtered co-ops from API based on search term (or based on no search term if there isn't one (which is considered "undefined" below))
 app.get("/coops-filter", (req, res) => {
-  // No longer need below line, since we're using the database.
-  // res.json(coops);
   // console.log(JSON.stringify(req.query));
   if (req.query.name != undefined) {
     // Show search results on page
