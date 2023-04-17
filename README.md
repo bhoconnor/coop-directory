@@ -14,7 +14,7 @@ There are various other useful sites for finding co-ops as well; most of those d
 
 # Prerequisites for running
 
-Install npm & Node.js [(details here)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+Install npm & Node.js ([(details here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm))
 
 # Instructions to run
 
